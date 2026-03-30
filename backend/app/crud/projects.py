@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models import Project
-from schemas.project import ProjectCreate, ProjectUpdate
+from app.schemas.project import ProjectCreate, ProjectUpdate
 
 def create_project(db: Session, data: ProjectCreate, user_id: int) -> Project:
     project = Project(
