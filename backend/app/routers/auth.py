@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status , Response
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app.core.deps import get_db
@@ -6,14 +6,15 @@ from app.core.security import verify_password, create_access_token
 from app.schemas.token import Token
 from app.crud.users import get_user_by_email
 
+
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/login", response_model=Token)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),  
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    response = Response
 ):
-
     user = get_user_by_email(db, email=form_data.username)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid email or password")
@@ -24,4 +25,9 @@ def login(
 
 
     token = create_access_token(data={"user_id": user.id, "role": user.role})
-    return {"access_token": token, "token_type": "bearer"}
+    return Response.set_cookie(key="access_token", value=token, httponly=False)
+
+@router.post("/logout")
+def logout(response: Response):
+    response.delete_cookie(key="access_token")
+    return {"message": "Logged out successfully"}

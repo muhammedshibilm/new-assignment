@@ -1,12 +1,4 @@
-from pathlib import Path
-import sys
-
 from fastapi import FastAPI
-
-BACKEND_DIR = Path(__file__).resolve().parent.parent
-if str(BACKEND_DIR) not in sys.path:
-    sys.path.insert(0, str(BACKEND_DIR))
-
 from app.api.router import router as api_router
 from app.db.session import Base, engine
 from app import models
