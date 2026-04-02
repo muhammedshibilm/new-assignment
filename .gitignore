@@ -6,3 +6,4 @@ frontend/.env
 frontend/.env.local
 .venv
 seed.py
+__pycache__/
