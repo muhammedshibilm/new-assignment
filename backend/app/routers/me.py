@@ -1,4 +1,5 @@
-from fastapi import APIRouter , Request , HTTPException, status , Response
+from fastapi import APIRouter, HTTPException, Request, status
+from app.core.security import decode_access_token
 
 router = APIRouter(
     prefix="/me",
@@ -17,8 +18,17 @@ def get_user(
             detail="Unauthorized",
             status_code=status.HTTP_401_UNAUTHORIZED
         )
-    
-    return Response(
-        content={'user' : 'valid'}
-    )
+
+    try:
+        payload = decode_access_token(token)
+    except ValueError:
+        raise HTTPException(
+            detail="Unauthorized",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+        )
+
+    return {
+        "user_id": payload.get("user_id"),
+        "role": payload.get("role"),
+    }
     
