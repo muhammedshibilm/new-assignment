@@ -25,7 +25,9 @@ def login(
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
 
-    token = create_access_token(data={"user_id": user.id, "role": user.role})
+    token = create_access_token(
+        data={"user_id": user.id, "name": user.name, "role": user.role}
+    )
     response.set_cookie(key="access_token", value=token, httponly=True)
     return Token(access_token=token)
 

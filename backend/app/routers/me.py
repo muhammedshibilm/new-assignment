@@ -29,6 +29,7 @@ def get_user(
 
     return {
         "user_id": payload.get("user_id"),
+        "name": payload.get("name"),
         "role": payload.get("role"),
     }
     
