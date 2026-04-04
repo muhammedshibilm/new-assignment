@@ -52,16 +52,20 @@ export default function Navbar() {
             <Link href="/projects" className="text-sm text-gray-700">
               Projects
             </Link>
-            <span>{user?.name}</span>
-            {user?.role === "developer" && (
-              <span className="rounded-full border border-blue-300 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
-                Developer
-              </span>
-            )}
+    
+    
           </>
         )}
       </div>
       <div className="flex items-center gap-3">
+                <div className="space-x-1.5 " >
+                            <span>{user?.name}</span>
+            {user?.role && (
+              <span className="rounded-full border border-blue-300 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
+               { user?.role}
+              </span>
+            )}
+            </div>
         {isAuthenticated ? (
           <button
             onClick={handleLogout}
